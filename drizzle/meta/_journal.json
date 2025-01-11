@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1736442429979,
+      "tag": "0000_parched_lila_cheney",
+      "breakpoints": true
+    }
+  ]
+}
