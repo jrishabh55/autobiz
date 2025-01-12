@@ -1,12 +1,19 @@
+import Link from 'next/link';
 
-export default function Home() {
+import { Button } from '@/components/ui/button';
+
+export default async function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <h1 className="text-2xl font-bold">WhatsApp Message Status</h1>
-        <input type="text" placeholder="Message ID" />
-        <button>Get Message Status</button>
-      </main>
-    </div>
+    <main className="flex grow flex-col items-center justify-center p-24">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold tracking-tight">
+          Welcome to <span className="text-primary">AutoBiz</span>
+        </h1>
+        <p className="mt-4 text-xl text-muted-foreground">Manage your customer communications efficiently</p>
+        <Button asChild className="mt-4">
+          <Link href="/dashboard">Get Started</Link>
+        </Button>
+      </div>
+    </main>
   );
 }

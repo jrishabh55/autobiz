@@ -1,0 +1,1 @@
+ALTER TABLE `customers` ADD `avatar` varchar(255) NOT NULL;
