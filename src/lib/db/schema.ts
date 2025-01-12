@@ -41,6 +41,7 @@ export const customers = mysqlTable('customers', {
   organizationId: varchar('organization_id', { length: 36 })
     .references(() => organizations.id, { onDelete: 'cascade' })
     .notNull(),
+  avatar: varchar('avatar', { length: 255 }).notNull(),
   name: varchar('name', { length: 255 }).notNull(),
   email: varchar('email', { length: 255 }).notNull(),
   mobile: varchar('mobile', { length: 20 }).notNull(),

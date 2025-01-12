@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
+import { ThemeSwitcher } from '@/components/theme-switcher';
 import { cn } from '@/lib/utils';
 
 export function MainNavigation() {
@@ -20,10 +21,10 @@ export function MainNavigation() {
       active: pathname === '/dashboard',
     },
     {
-      href: '/messages',
+      href: '/dashboard/messages',
       label: 'Messages',
       icon: MessageSquare,
-      active: pathname === '/messages',
+      active: pathname === '/dashboard/messages',
     },
     {
       href: '/settings',
@@ -58,6 +59,7 @@ export function MainNavigation() {
           </nav>
         </div>
         <div className="ml-auto flex items-center space-x-4">
+          <ThemeSwitcher />
           <SignedOut>
             <SignInButton mode="modal">
               <Button variant="outline">Sign In</Button>

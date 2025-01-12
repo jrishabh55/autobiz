@@ -1,8 +1,8 @@
 import { useClerk } from '@clerk/nextjs';
 
-export default async function Logout() {
+export default function Logout() {
   const { signOut } = useClerk();
-  await signOut({
+  signOut({
     redirectUrl: '/',
   });
 }
