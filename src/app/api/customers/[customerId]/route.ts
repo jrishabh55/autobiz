@@ -3,7 +3,7 @@ import { getUser } from '@/lib/actions/auth';
 import { auth } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request, { params }: { params: PromiseLike<{ customerId: string }> }) {
+export async function GET(request: Request, { params }: { params: Promise<{ customerId: string }> }) {
   const { customerId } = await params;
   const { userId } = await auth();
   if (!userId) {

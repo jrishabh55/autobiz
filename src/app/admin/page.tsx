@@ -1,23 +1,13 @@
 import { clerkClient } from '@clerk/nextjs/server';
 
-import { redirect } from 'next/navigation';
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { voidFunction } from '@/utils';
-import { checkRole } from '@/utils/roles';
 
-import { removeRole, setRole } from './_actions';
 import { SearchUsers } from './SearchUsers';
 
 export default async function AdminDashboard({ searchParams }: { searchParams: Promise<{ search?: string }> }) {
-  if (!checkRole('admin')) {
-    redirect('/');
-  }
-
   const { search } = await searchParams;
   const client = await clerkClient();
-  // eslint-disable-next-line unicorn/no-await-expression-member
   const users = search ? (await client.users.getUserList({ query: search })).data : [];
 
   return (
@@ -43,7 +33,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
               <div className="mt-2 text-sm font-medium">{user.publicMetadata.role as string}</div>
 
               <div className="mt-4 space-y-2">
-                <form action={voidFunction(setRole)}>
+                <form>
                   <input name="id" type="hidden" value={user.id} />
                   <input name="role" type="hidden" value="admin" />
                   <Button className="w-full" type="submit" variant="default">
@@ -51,7 +41,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
                   </Button>
                 </form>
 
-                <form action={voidFunction(setRole)}>
+                <form>
                   <input name="id" type="hidden" value={user.id} />
                   <input name="role" type="hidden" value="moderator" />
                   <Button className="w-full" type="submit" variant="secondary">
@@ -59,7 +49,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
                   </Button>
                 </form>
 
-                <form action={voidFunction(removeRole)}>
+                <form>
                   <input name="id" type="hidden" value={user.id} />
                   <Button className="w-full" type="submit" variant="destructive">
                     Remove Role

@@ -24,6 +24,7 @@ export const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
           theme={theme || 'light'}
           data={data}
           maxFrequentRows={1}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onEmojiSelect={(emoji: any) => onChange(emoji.native)}
         />
       </PopoverContent>

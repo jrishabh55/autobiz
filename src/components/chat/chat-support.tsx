@@ -4,17 +4,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Bot, Send } from 'lucide-react';
 import {
-  ChatBubble,
-  ChatBubbleAvatar,
-  ChatBubbleMessage,
   ExpandableChat,
-  ExpandableChatHeader,
   ExpandableChatBody,
   ExpandableChatFooter,
-  ChatInput,
-  ChatMessageList,
-} from '@shadcn-chat/ui';
+  ExpandableChatHeader,
+} from '@/components/ui/chat/expandable-chat';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ChatMessageList } from '../ui/chat/chat-message-list';
+import { ChatBubble, ChatBubbleAvatar, ChatBubbleMessage } from '../ui/chat/chat-bubble';
+import { ChatInput } from '../ui/chat/chat-input';
 
 interface Message {
   id: string;

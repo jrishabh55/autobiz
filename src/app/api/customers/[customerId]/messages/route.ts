@@ -6,7 +6,7 @@ import { eq } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { NextRequest, NextResponse } from 'next/server';
 
-export const GET = async (req: NextRequest, { params }: { params: PromiseLike<{ customerId: string }> }) => {
+export const GET = async (req: NextRequest, { params }: { params: Promise<{ customerId: string }> }) => {
   const { customerId } = await params;
   if (!customerId || typeof customerId !== 'string') {
     return NextResponse.json({ message: 'Customer ID is required' }, { status: 400 });
@@ -19,7 +19,7 @@ export const GET = async (req: NextRequest, { params }: { params: PromiseLike<{ 
   return NextResponse.json({ messages: _messages });
 };
 
-export async function POST(req: NextRequest, { params }: { params: PromiseLike<{ customerId: string }> }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ customerId: string }> }) {
   const { customerId } = await params;
   const { userId } = await auth();
 

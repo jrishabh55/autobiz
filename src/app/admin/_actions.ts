@@ -1,36 +1,47 @@
 'use server';
 
-import { clerkClient } from '@clerk/nextjs/server';
+import { actionClient } from '@/src/lib/safe-action';
+import { OrganizationCustomRoleKey } from '@/types/globals';
+import { auth, clerkClient } from '@clerk/nextjs/server';
+import { z } from 'zod';
 
-import { checkRole } from '@/utils/roles';
+export const checkRole = async (role: OrganizationCustomRoleKey) => {
+  const user = await auth();
+  return user?.orgRole === role;
+};
 
-export async function setRole(formData: FormData) {
+const setRoleSchema = z.object({
+  id: z.string(),
+  role: z.string(),
+});
+
+export const setRole = actionClient.schema(setRoleSchema).action(async ({ parsedInput }) => {
   const client = await clerkClient();
 
   // Check that the user trying to set the role is an admin
-  if (!checkRole('admin')) {
+  if (!checkRole('org:admin')) {
     return { message: 'Not Authorized' };
   }
 
   try {
-    const res = await client.users.updateUser(formData.get('id') as string, {
-      publicMetadata: { role: formData.get('role') },
+    const res = await client.users.updateUser(parsedInput.id, {
+      publicMetadata: { role: parsedInput.role },
     });
     return { message: res.publicMetadata };
   } catch (error) {
     return { message: error };
   }
-}
+});
 
-export async function removeRole(formData: FormData) {
+export const removeRole = actionClient.schema(setRoleSchema).action(async ({ parsedInput }) => {
   const client = await clerkClient();
 
   try {
-    const res = await client.users.updateUser(formData.get('id') as string, {
+    const res = await client.users.updateUser(parsedInput.id, {
       publicMetadata: { role: null },
     });
     return { message: res.publicMetadata };
   } catch (error) {
     return { message: error };
   }
-}
+});

@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { getMessages } from './_actions';
 import Head from 'next/head';
 
-export default async function CustomerChat({ params }: { params: PromiseLike<{ customerId: string }> }) {
+export default async function CustomerChat({ params }: { params: Promise<{ customerId: string }> }) {
   const { customerId } = await params;
   const customersActionResult = await getCustomers();
   const customers = customersActionResult?.data ?? [];

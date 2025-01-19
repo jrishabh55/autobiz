@@ -2,5 +2,10 @@
     "cSpell.words": [
         "bottombar",
         "topbar"
-    ]
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "always"
+    },
+    "eslint.enable": true,
+    "eslint.lintTask.enable": true
 }

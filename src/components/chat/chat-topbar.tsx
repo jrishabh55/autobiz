@@ -1,12 +1,11 @@
-import React from 'react';
-import { Avatar, AvatarImage } from '../ui/avatar';
-import { Info, Phone, Video } from 'lucide-react';
-import Link from 'next/link';
+import { Customer } from '@/lib/db';
 import { cn } from '@/lib/utils';
+import { AvatarFallback } from '@radix-ui/react-avatar';
+import { Info } from 'lucide-react';
+import Link from 'next/link';
+import { Avatar, AvatarImage } from '../ui/avatar';
 import { buttonVariants } from '../ui/button';
 import { ExpandableChatHeader } from '../ui/chat/expandable-chat';
-import { Customer } from '@/lib/db';
-import { AvatarFallback } from '@radix-ui/react-avatar';
 
 interface ChatTopbarProps {
   selectedCustomer?: Customer;

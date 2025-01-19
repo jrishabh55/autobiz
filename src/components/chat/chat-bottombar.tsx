@@ -11,7 +11,6 @@ import { Button, buttonVariants } from '../ui/button';
 
 import { ChatInput } from '@/components/ui/chat/chat-input';
 import { sendWhatsAppMessage } from '@/lib/services/whatsapp';
-import { nanoid } from 'nanoid';
 
 interface ChatBottombarProps {
   isMobile: boolean;
@@ -22,10 +21,7 @@ export const bottomBarIcons = [{ icon: FileImage }, { icon: Paperclip }];
 export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
   const [message, setMessage] = useState('');
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  // const setMessages = useChatStore((state) => state.setMessages);
-  // const hasInitialResponse = useChatStore((state) => state.hasInitialResponse);
-  // const setHasInitialResponse = useChatStore((state) => state.setHasInitialResponse);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(event.target.value);
@@ -47,10 +43,6 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
 
   const handleSend = () => {
     if (message.trim()) {
-      const newMessage = {
-        id: nanoid(),
-        content: message.trim(),
-      };
       // sendMessage(newMessage);
       setMessage('');
 

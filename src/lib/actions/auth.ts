@@ -95,9 +95,9 @@ export const createUser = async ({
   });
 };
 
-export const getUser = async (userId: string) => {
+export const getUser = async (clerkUserId: string) => {
   const user = await db.query.users.findFirst({
-    where: eq(users.clerkId, userId),
+    where: eq(users.clerkId, clerkUserId),
   });
 
   if (!user) {

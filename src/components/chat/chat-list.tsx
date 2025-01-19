@@ -26,7 +26,7 @@ interface ChatListProps {
 const getMessageVariant = (messageDirection: string, selectedCustomerName: string) =>
   messageDirection !== selectedCustomerName ? 'sent' : 'received';
 
-export function ChatList({ messages = [], selectedCustomer, sendMessage, isMobile }: ChatListProps) {
+export function ChatList({ messages = [], selectedCustomer }: ChatListProps) {
   const actionIcons = [
     { icon: DotsVerticalIcon, type: 'More' },
     { icon: Forward, type: 'Like' },
