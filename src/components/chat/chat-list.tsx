@@ -1,4 +1,6 @@
-import { Message, Customer } from '@/lib/db';
+'use client';
+
+import { Message, Customer } from '@/lib/db/zodSchema';
 import { DotsVerticalIcon } from '@radix-ui/react-icons';
 
 import { AnimatePresence, motion } from 'framer-motion';
@@ -12,11 +14,12 @@ import {
   ChatBubbleMessage,
   ChatBubbleTimestamp,
 } from '@/components/ui/chat/chat-bubble';
+import { sendMessage } from '@/app/dashboard/messages/[customerId]/_actions';
 
 interface ChatListProps {
   messages?: Message[];
   selectedCustomer: Customer;
-  sendMessage: (newMessage: Message) => void;
+  sendMessage: typeof sendMessage;
   isMobile: boolean;
 }
 
@@ -31,7 +34,7 @@ export function ChatList({ messages = [], selectedCustomer, sendMessage, isMobil
   ];
 
   return (
-    <div className="w-full overflow-y-hidden h-full flex flex-col">
+    <div className="w-full overflow-y-hidden h-full flex flex-col bg-background text-foreground">
       <ChatMessageList>
         <AnimatePresence>
           {messages.map((message, index) => {
@@ -56,7 +59,13 @@ export function ChatList({ messages = [], selectedCustomer, sendMessage, isMobil
               >
                 {/* Usage of ChatBubble component */}
                 <ChatBubble variant={variant}>
-                  <ChatBubbleAvatar src={selectedCustomer.avatar} />
+                  <ChatBubbleAvatar
+                    src={selectedCustomer.avatar}
+                    fallback={selectedCustomer.name
+                      .split(' ')
+                      .map((name) => name[0])
+                      .join('')}
+                  />
                   <ChatBubbleMessage isLoading={false}>
                     {message.content}
                     {message.createdAt && <ChatBubbleTimestamp timestamp={message.createdAt.toISOString()} />}

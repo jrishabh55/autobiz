@@ -1,21 +1,27 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+import { Customer } from '@/lib/db/zodSchema';
 import { cn } from '@/lib/utils';
+import React, { useEffect, useState } from 'react';
 import { Sidebar } from './chat-sidebar';
-import { Chat } from './chat';
 
 interface ChatLayoutProps {
   defaultLayout?: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
+  customers: Customer[];
+  children?: React.ReactNode;
 }
 
+const $defaultLayout = [320, 480];
+
 export function ChatLayout({
-  defaultLayout = [320, 480],
+  defaultLayout = $defaultLayout,
   defaultCollapsed = false,
   navCollapsedSize,
+  customers,
+  children,
 }: ChatLayoutProps) {
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
 
@@ -62,11 +68,11 @@ export function ChatLayout({
         }}
         className={cn(isCollapsed && 'min-w-[50px] md:min-w-[70px] transition-all duration-300 ease-in-out')}
       >
-        <Sidebar isCollapsed={isCollapsed || isMobile} chats={[]} isMobile={isMobile} />
+        <Sidebar isCollapsed={isCollapsed || isMobile} customers={customers} />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-        <Chat messages={[]} selectedCustomer={{}} isMobile={isMobile} />
+        <div className="h-full flex">{children}</div>
       </ResizablePanel>
     </ResizablePanelGroup>
   );

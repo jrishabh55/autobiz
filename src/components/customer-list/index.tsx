@@ -3,7 +3,14 @@ import { CustomerListItem } from './custome-list-item';
 import { getCustomers } from './customer-list.action';
 
 const CustomerList = async ({ selectedCustomerId }: { selectedCustomerId?: string }) => {
-  const customers = await getCustomers();
+  const actionResult = await getCustomers();
+
+  if (!actionResult?.data) {
+    return <div>No customers found</div>;
+  }
+
+  const customers = actionResult.data;
+
   return (
     <div className="border bg-background overflow-y-auto">
       <div className="p-4 border-b">

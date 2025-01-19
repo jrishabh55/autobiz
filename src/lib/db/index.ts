@@ -2,10 +2,23 @@ import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
 import * as schema from './schema';
 
-const connection = await mysql.createConnection(process.env.DATABASE_URL!);
-export const db = drizzle(connection, { schema, mode: 'default' });
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL is not set');
+}
 
-export type Customer = typeof schema.customers.$inferSelect;
-export type NewCustomer = typeof schema.customers.$inferInsert;
-export type Message = typeof schema.messages.$inferSelect;
-export type NewMessage = typeof schema.messages.$inferInsert;
+const connection = mysql.createPool(process.env.DATABASE_URL!);
+
+declare global {
+  // eslint-disable-next-line no-var
+  var _db: ReturnType<typeof drizzle<typeof schema, typeof connection>> | undefined;
+}
+
+const db = globalThis._db || drizzle(connection, { schema, mode: 'default' });
+
+if (process.env.NODE_ENV !== 'production') {
+  globalThis._db = db;
+}
+
+export { db };
+
+export * from './zodSchema';

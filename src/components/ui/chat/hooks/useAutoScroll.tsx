@@ -1,3 +1,4 @@
+'use client';
 // @hidden
 import { useCallback, useEffect, useRef, useState } from 'react';
 

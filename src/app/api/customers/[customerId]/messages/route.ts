@@ -1,14 +1,13 @@
 import { getUser } from '@/lib/actions/auth';
 import { db } from '@/lib/db';
 import { messages } from '@/lib/db/schema';
-import { getAuth } from '@clerk/nextjs/server';
+import { auth } from '@clerk/nextjs/server';
 import { eq } from 'drizzle-orm';
 import { nanoid } from 'nanoid';
 import { NextRequest, NextResponse } from 'next/server';
 
-export const GET = async (req: NextRequest) => {
-  const { searchParams } = req.nextUrl;
-  const customerId = searchParams.get('customerId');
+export const GET = async (req: NextRequest, { params }: { params: PromiseLike<{ customerId: string }> }) => {
+  const { customerId } = await params;
   if (!customerId || typeof customerId !== 'string') {
     return NextResponse.json({ message: 'Customer ID is required' }, { status: 400 });
   }
@@ -20,23 +19,23 @@ export const GET = async (req: NextRequest) => {
   return NextResponse.json({ messages: _messages });
 };
 
-export async function POST(req: NextRequest) {
-  const { userId } = getAuth(req);
+export async function POST(req: NextRequest, { params }: { params: PromiseLike<{ customerId: string }> }) {
+  const { customerId } = await params;
+  const { userId } = await auth();
 
   if (!userId) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
 
   const user = await getUser(userId);
-  const { customerId, message } = await req.json();
-  console.log('🚀 ~ POST ~ body:', req.body);
+  const { message } = await req.json();
 
-  if (!customerId || !message) {
-    return NextResponse.json({ message: 'Customer ID and message are required' }, { status: 400 });
+  if (!message) {
+    return NextResponse.json({ message: 'Message is required' }, { status: 400 });
   }
 
   const newMessage = await db.insert(messages).values({
-    customerId,
+    customerId: customerId,
     content: message,
     direction: 'outgoing',
     organizationId: user.organizationId,

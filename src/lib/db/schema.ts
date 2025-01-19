@@ -98,6 +98,7 @@ export const messages = mysqlTable('messages', {
     enum: ['sent', 'delivered', 'read', 'failed'],
   }).notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
 
 export const messagesRelations = relations(messages, ({ one }) => ({

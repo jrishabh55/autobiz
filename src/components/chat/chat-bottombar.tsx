@@ -1,14 +1,15 @@
+'use client';
+
 import { EmojiPicker } from '@/components/emoji-picker';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FileImage, Mic, Paperclip, PlusCircle, SendHorizontal, ThumbsUp } from 'lucide-react';
 import Link from 'next/link';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, buttonVariants } from '../ui/button';
 
 import { ChatInput } from '@/components/ui/chat/chat-input';
-import { Message } from '@/lib/db';
 import { sendWhatsAppMessage } from '@/lib/services/whatsapp';
 import { nanoid } from 'nanoid';
 
@@ -46,11 +47,9 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
 
   const handleSend = () => {
     if (message.trim()) {
-      const newMessage: Message = {
+      const newMessage = {
         id: nanoid(),
-        name: 'Jane Doe',
-        avatar: 'https://images.freeimages.com/images/large-previews/971/basic-shape-avatar-1632968.jpg?fmt=webp&h=350',
-        message: message.trim(),
+        content: message.trim(),
       };
       // sendMessage(newMessage);
       setMessage('');
@@ -71,25 +70,6 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-
-    // if (!hasInitialResponse) {
-    //   setIsLoading(true);
-    //   setTimeout(() => {
-    //     setMessages((messages) => [
-    //       ...messages.slice(0, messages.length - 1),
-    //       {
-    //         id: messages.length + 1,
-    //         avatar:
-    //           'https://images.freeimages.com/images/large-previews/971/basic-shape-avatar-1632968.jpg?fmt=webp&h=350',
-    //         name: 'Jane Doe',
-    //         message: 'Awesome! I am just chilling outside.',
-    //         timestamp: formattedTime,
-    //       },
-    //     ]);
-    //     setIsLoading(false);
-    //     setHasInitialResponse(true);
-    //   }, 2500);
-    // }
   }, []);
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -178,7 +158,7 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
             placeholder="Type a message..."
             className="rounded-full"
           />
-          <div className="absolute right-4 bottom-2  ">
+          <div className="absolute top-1/2 -translate-y-1/2 right-4 p-0 flex">
             <EmojiPicker
               onChange={(value) => {
                 setMessage(message + value);

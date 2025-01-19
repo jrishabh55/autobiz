@@ -1,0 +1,1 @@
+ALTER TABLE `messages` ADD `updated_at` timestamp DEFAULT (now()) NOT NULL;

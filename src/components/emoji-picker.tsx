@@ -16,7 +16,7 @@ export const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
   return (
     <Popover>
       <PopoverTrigger>
-        <SmileIcon className="h-5 w-5 text-muted-foreground hover:text-foreground transition" />
+        <SmileIcon className="text-muted-foreground hover:text-foreground transition" />
       </PopoverTrigger>
       <PopoverContent className="w-full">
         <Picker

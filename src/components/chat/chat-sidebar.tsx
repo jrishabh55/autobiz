@@ -1,26 +1,21 @@
-'use client';
-
-import Link from 'next/link';
-import { MoreHorizontal, SquarePen } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Customer } from '@/lib/db';
+import { cn } from '@/lib/utils';
+import { MoreHorizontal, SquarePen } from 'lucide-react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { CustomerListItem } from '../customer-list/custome-list-item';
 import { Avatar, AvatarImage } from '../ui/avatar';
-import { Message } from '@/lib/db';
 
 interface SidebarProps {
   isCollapsed: boolean;
-  chats: {
-    name: string;
-    messages: Message[];
-    avatar: string;
-    variant: 'secondary' | 'ghost';
-  }[];
-  onClick?: () => void;
-  isMobile: boolean;
+  customers: Customer[];
 }
 
-export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
+export function Sidebar({ isCollapsed, customers }: SidebarProps) {
+  const { customerId } = useParams<{ customerId: string }>();
+
   return (
     <div
       data-collapsed={isCollapsed}
@@ -30,7 +25,7 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
         <div className="flex justify-between p-2 items-center">
           <div className="flex gap-2 items-center text-2xl">
             <p className="font-medium">Chats</p>
-            <span className="text-zinc-300">({chats.length})</span>
+            <span className="text-zinc-300">({customers.length})</span>
           </div>
 
           <div>
@@ -45,57 +40,39 @@ export function Sidebar({ chats, isCollapsed, isMobile }: SidebarProps) {
         </div>
       )}
       <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
-        {chats.map((chat, index) =>
+        {customers.map((customer) =>
           isCollapsed ? (
-            <TooltipProvider key={index}>
-              <Tooltip key={index} delayDuration={0}>
+            <TooltipProvider key={customer.id}>
+              <Tooltip key={customer.id} delayDuration={0}>
                 <TooltipTrigger asChild>
                   <Link
                     href="#"
                     className={cn(
-                      buttonVariants({ variant: chat.variant, size: 'icon' }),
+                      buttonVariants({ variant: 'secondary', size: 'icon' }),
                       'h-11 w-11 md:h-16 md:w-16',
-                      chat.variant === 'secondary' &&
-                        'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white'
+                      'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white',
+                      'cursor-pointer'
                     )}
                   >
                     <Avatar className="flex justify-center items-center">
-                      <AvatarImage src={chat.avatar} alt={chat.avatar} width={6} height={6} className="w-10 h-10 " />
+                      <AvatarImage
+                        src={customer.avatar}
+                        alt={customer.avatar}
+                        width={6}
+                        height={6}
+                        className="w-10 h-10 "
+                      />
                     </Avatar>{' '}
-                    <span className="sr-only">{chat.name}</span>
+                    <span className="sr-only">{customer.name}</span>
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="right" className="flex items-center gap-4">
-                  {chat.name}
+                  {customer.name}
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
           ) : (
-            <Link
-              key={index}
-              href="#"
-              className={cn(
-                buttonVariants({ variant: chat.variant, size: 'lg' }),
-                chat.variant === 'secondary' &&
-                  'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white shrink',
-                'justify-start gap-4'
-              )}
-            >
-              <Avatar className="flex justify-center items-center">
-                <AvatarImage src={chat.avatar} alt={chat.avatar} width={6} height={6} className="w-10 h-10 " />
-              </Avatar>
-              <div className="flex flex-col max-w-28">
-                <span>{chat.name}</span>
-                {chat.messages.length > 0 && (
-                  <span className="text-zinc-300 text-xs truncate ">
-                    {chat.messages[chat.messages.length - 1].content.split(' ')[0]}:{' '}
-                    {chat.messages[chat.messages.length - 1].isLoading
-                      ? 'Typing...'
-                      : chat.messages[chat.messages.length - 1].content}
-                  </span>
-                )}
-              </div>
-            </Link>
+            <CustomerListItem key={customer.id} customer={customer} selectedCustomerId={customerId} />
           )
         )}
       </nav>
