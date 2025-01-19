@@ -1,6 +1,6 @@
 'use server';
 
-import { actionClient } from '@/src/lib/safe-action';
+import { actionClient } from '@/lib/safe-action';
 import { OrganizationCustomRoleKey } from '@/types/globals';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { z } from 'zod';

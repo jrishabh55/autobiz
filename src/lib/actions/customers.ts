@@ -7,7 +7,7 @@ import { revalidatePath } from 'next/cache';
 
 import { customerSchema, db, newCustomerSchema } from '@/lib/db';
 import { customers, organizations, users } from '@/lib/db/schema';
-import { actionClient } from '@/src/lib/safe-action';
+import { actionClient } from '@/lib/safe-action';
 import { z } from 'zod';
 
 export const updateCustomer = actionClient.schema(customerSchema).action(async ({ parsedInput }) => {

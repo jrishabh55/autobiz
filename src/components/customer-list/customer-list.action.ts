@@ -3,7 +3,7 @@
 import { getUser } from '@/lib/actions/auth';
 import { db } from '@/lib/db';
 import { customers } from '@/lib/db/schema';
-import { actionClient } from '@/src/lib/safe-action';
+import { actionClient } from '@/lib/safe-action';
 import { auth } from '@clerk/nextjs/server';
 import { and, eq } from 'drizzle-orm';
 import { z } from 'zod';

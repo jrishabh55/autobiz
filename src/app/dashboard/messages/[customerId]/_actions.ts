@@ -2,7 +2,7 @@
 
 import { db } from '@/lib/db';
 import { messages } from '@/lib/db/schema';
-import { actionClient } from '@/src/lib/safe-action';
+import { actionClient } from '@/lib/safe-action';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 
