@@ -1,5 +1,11 @@
 import { ChatLayout } from '@/components/chat/chat-layout';
 import { getCustomers } from '@/components/customer-list/customer-list.action';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Messages - AutoBiz',
+  description: 'Manage your messages',
+};
 
 export default async function MessagesLayout({ children }: { children: React.ReactNode }) {
   const customersActionResult = await getCustomers();

@@ -1,4 +1,10 @@
 import { MainNavigation } from '@/components/main-nav';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Dashboard - AutoBiz',
+  description: 'Manage your customers and messages',
+};
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (

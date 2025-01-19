@@ -2,6 +2,7 @@ import { Chat } from '@/components/chat/chat';
 import { getCustomers } from '@/components/customer-list/customer-list.action';
 import { redirect } from 'next/navigation';
 import { getMessages } from './_actions';
+import Head from 'next/head';
 
 export default async function CustomerChat({ params }: { params: PromiseLike<{ customerId: string }> }) {
   const { customerId } = await params;
@@ -16,5 +17,13 @@ export default async function CustomerChat({ params }: { params: PromiseLike<{ c
 
   const messages = messagesActionResult?.data ?? [];
 
-  return <Chat messages={messages} selectedCustomer={customer} isMobile={false} />;
+  return (
+    <>
+      <Head>
+        <title>{customer.name} Messages - AutoBiz</title>
+        <meta name="description" content={`Messages with ${customer.name}`} />
+      </Head>
+      <Chat messages={messages} selectedCustomer={customer} isMobile={false} />
+    </>
+  );
 }

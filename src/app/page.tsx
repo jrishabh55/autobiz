@@ -1,6 +1,12 @@
 import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'AutoBiz',
+  description: 'Manage your customer communications efficiently',
+};
 
 export default async function Home() {
   return (
