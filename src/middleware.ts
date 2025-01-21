@@ -7,8 +7,15 @@ const isPublicRoute = createRouteMatcher(['/public-route-example']);
 const isAdminRoute = createRouteMatcher(['/admin(.*)']);
 const isDashboardRoute = createRouteMatcher(['/dashboard(.*)']);
 
+// const isApiRoute = createRouteMatcher(['/api(.*)']);
+const isWebhookRoute = createRouteMatcher(['/api/webhook/(.*)']);
+
 export default clerkMiddleware(async (auth, request: NextRequest) => {
   const { userId, sessionClaims, redirectToSignIn } = await auth();
+
+  if (isWebhookRoute(request)) {
+    return NextResponse.next();
+  }
 
   if (isPublicRoute(request)) {
     return NextResponse.next();
