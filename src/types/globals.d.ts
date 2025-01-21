@@ -6,11 +6,8 @@ export type OrganizationCustomRoleKey = 'org:admin' | 'org:moderator' | 'org:mem
 declare global {
   interface CustomJwtSessionClaims {
     metadata: {
+      role?: OrganizationCustomRoleKey;
       onboardingComplete?: boolean;
-      role?: Roles;
-      organizationType?: string;
-      organizationName?: string;
-      organizationId?: string;
       userId?: string;
     };
     orgRole?: OrganizationCustomRoleKey;

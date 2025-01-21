@@ -34,10 +34,7 @@ export const userSchema = createSelectSchema(users, {
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
 });
-export const newUserSchema = createInsertSchema(users, {
-  createdAt: z.coerce.date(),
-  updatedAt: z.coerce.date(),
-});
+export const newUserSchema = createInsertSchema(users);
 
 export type Message = z.infer<typeof messageSchema>;
 export type Customer = z.infer<typeof customerSchema>;

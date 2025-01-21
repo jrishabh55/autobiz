@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 
 import { CustomerForm } from '@/components/customer-form';
 import CustomerList from '@/components/customer-list';
+import { Suspense } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const metadata: Metadata = {
   title: 'Dashboard - AutoBiz',
@@ -34,7 +36,9 @@ export default function DashboardPage() {
               <p className="text-muted-foreground">Your most recently added customers</p>
             </div>
             <div className="rounded-lg p-4">
-              <CustomerList />
+              <Suspense fallback={<Skeleton lines={10} />}>
+                <CustomerList />
+              </Suspense>
             </div>
           </div>
         </div>

@@ -1,43 +1,37 @@
 'use client';
 
-import { OrganizationSwitcher, useUser } from '@clerk/nextjs';
+import { OrganizationSwitcher } from '@clerk/nextjs';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-
-import { useRouter } from 'next/navigation';
+import { FormProvider } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import { FormMessage } from '@/components/ui/form';
 import { Label } from '@/components/ui/label';
 
-import { completeOnboarding } from './_actions';
+import { onboardingAction } from '@/lib/actions/auth';
+import { onboardingActionValidation } from '@/lib/validations';
 
 export default function OnboardingComponent() {
-  // If the user has an active organization, render the children
-  const [error, setError] = useState('');
-  const { user } = useUser();
-  const router = useRouter();
-  const methods = useForm({
-    // resolver: zodResolver(formSchema),
-  });
-  const handleSubmit = async () => {
-    const res = await completeOnboarding();
-    if (res?.message) {
-      await user?.reload();
-      router.push('/dashboard');
+  const { form, handleSubmitWithAction } = useHookFormAction(
+    onboardingAction,
+    zodResolver(onboardingActionValidation),
+    {
+      actionProps: {},
+      formProps: {},
+      errorMapProps: {},
     }
-    if (res?.error) {
-      setError(res?.error);
-    }
-  };
+  );
+  const [error] = useState('');
 
   return (
     <div className="flex w-full items-center justify-center p-4">
       <div className="w-full max-w-xl rounded-xl border bg-white p-8 shadow-lg">
         <h1 className="mb-6 text-center text-3xl font-bold text-gray-900">Welcome to AutoBiz</h1>
         <p className="mb-8 text-center text-gray-600">Please complete your organization setup to continue</p>
-        <FormProvider {...methods}>
-          <form className="space-y-6" onSubmit={methods.handleSubmit(handleSubmit)}>
+        <FormProvider {...form}>
+          <form className="space-y-6" onSubmit={handleSubmitWithAction}>
             <section>
               <h1>Welcome to the Organization Selection page.</h1>
               <Label className="text-xs text-gray-600">

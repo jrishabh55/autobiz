@@ -10,6 +10,19 @@ const isDashboardRoute = createRouteMatcher(['/dashboard(.*)']);
 export default clerkMiddleware(async (auth, request: NextRequest) => {
   const { userId, sessionClaims, redirectToSignIn } = await auth();
 
+  if (isPublicRoute(request)) {
+    return NextResponse.next();
+  }
+
+  // For users visiting /onboarding, don't try to redirect
+  if (userId && isOnboardingRoute(request)) {
+    return NextResponse.next();
+  }
+
+  if (isAdminRoute(request)) {
+    await auth.protect((has) => has({ role: 'org:admin' }));
+  }
+
   // If the user isn't signed in and the route is private, redirect to sign-in
   if (!userId && !isPublicRoute(request)) return redirectToSignIn({ returnBackUrl: request.url });
 
@@ -18,12 +31,7 @@ export default clerkMiddleware(async (auth, request: NextRequest) => {
   }
 
   if (isAdminRoute(request)) {
-    await auth.protect((has) => has({ role: 'admin' }));
-  }
-
-  // For users visiting /onboarding, don't try to redirect
-  if (userId && isOnboardingRoute(request)) {
-    return NextResponse.next();
+    await auth.protect((has) => has({ role: 'org:admin' }));
   }
 
   // Catch users who do not have `onboardingComplete: true` in their publicMetadata
