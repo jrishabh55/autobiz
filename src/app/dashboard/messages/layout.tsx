@@ -12,7 +12,7 @@ export default async function MessagesLayout({ children }: { children: React.Rea
   const customers = customersActionResult?.data ?? [];
 
   return (
-    <div className="flex grow flex-row">
+    <div className="flex grow flex-col overflow-hidden h-[calc(100svh-4.5rem)]">
       <ChatLayout navCollapsedSize={8} customers={customers}>
         {children}
       </ChatLayout>

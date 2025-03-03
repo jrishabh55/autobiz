@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 
 export default function DashboardPage() {
   return (
-    <div className="container max-w-7xl">
+    <div className="w-full">
       <div className="flex flex-col gap-8">
-        <div className="flex flex-col gap-2 text-center">
+        <div className="flex flex-col gap-2 text-center border-b pb-4">
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
           <p className="text-muted-foreground">Manage your customers and messages</p>
         </div>

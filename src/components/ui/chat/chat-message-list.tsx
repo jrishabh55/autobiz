@@ -1,6 +1,6 @@
-import { ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAutoScroll } from '@/components/ui/chat/hooks/useAutoScroll';
+import { ArrowDown } from 'lucide-react';
 import { forwardRef } from 'react';
 
 interface ChatMessageListProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -23,7 +23,7 @@ const ChatMessageList = forwardRef<HTMLDivElement, ChatMessageListProps>(
           onTouchMove={disableAutoScroll}
           {...props}
         >
-          <div className="flex flex-col gap-6">{children}</div>
+          <div className="flex flex-col gap-6 h-full">{children}</div>
         </div>
 
         {!isAtBottom && (

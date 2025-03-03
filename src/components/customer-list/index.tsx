@@ -1,6 +1,6 @@
 'use server';
 import { FC, Suspense } from 'react';
-import { CustomerListItem } from './custome-list-item';
+import { CustomerListItem } from './customer-list-item';
 import { getCustomers } from './customer-list.action';
 import { Skeleton } from '../ui/skeleton';
 
@@ -10,7 +10,7 @@ type CustomerListProps = {
 
 const CustomerList: FC<CustomerListProps> = ({ selectedCustomerId }) => {
   return (
-    <div className="border bg-background overflow-y-auto">
+    <div className="border bg-background overflow-y-auto rounded-md">
       <div className="p-4 border-b">
         <h2 className="text-lg font-semibold text-foreground">Customers</h2>
       </div>

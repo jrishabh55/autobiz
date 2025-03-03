@@ -1,5 +1,4 @@
 'use client';
-
 import { EmojiPicker } from '@/components/emoji-picker';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
@@ -7,18 +6,22 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { FileImage, Mic, Paperclip, PlusCircle, SendHorizontal, ThumbsUp } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import superJSON from 'superjson';
 import { Button, buttonVariants } from '../ui/button';
 
+import { sendMessage } from '@/app/dashboard/messages/[customerId]/_actions';
 import { ChatInput } from '@/components/ui/chat/chat-input';
-import { sendWhatsAppMessage } from '@/lib/services/whatsapp';
+import { Customer, Message } from '@/lib/db';
 
 interface ChatBottombarProps {
   isMobile: boolean;
+  selectedCustomer: Customer;
+  addMessage: (newMessage: Message) => void;
 }
 
 export const bottomBarIcons = [{ icon: FileImage }, { icon: Paperclip }];
 
-export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
+export default function ChatBottombar({ isMobile, selectedCustomer, addMessage }: ChatBottombarProps) {
   const [message, setMessage] = useState('');
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [isLoading] = useState(false);
@@ -27,36 +30,41 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
     setMessage(event.target.value);
   };
 
-  const handleThumbsUp = () => {
-    // const newMessage: Message = {
-    //   id: message.length + 1,
-    //   name: loggedInUserData.name,
-    //   avatar: loggedInUserData.avatar,
-    //   message: '👍',
-    // };
-    sendWhatsAppMessage({
-      message: '👍',
-      to: '5511999999999',
-    });
+  const handleThumbsUp = async () => {
+    await sendMessage({ message: '👍', customerId: selectedCustomer.id, provider: 'whatsapp' });
     setMessage('');
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (message.trim()) {
-      // sendMessage(newMessage);
-      setMessage('');
+      try {
+        const response = await sendMessage({
+          message: message,
+          customerId: selectedCustomer.id,
+          provider: 'whatsapp',
+        });
+        console.log('🚀 ~ handleSend ~ response:', response);
 
-      if (inputRef.current) {
-        inputRef.current.focus();
+        if (!response?.data) {
+          throw new Error('No response from sendMessage');
+        }
+
+        const result = superJSON.parse(response.data) as Message;
+
+        // Check if response is valid and has a result property
+        addMessage(result);
+
+        setMessage('');
+
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      } catch (error) {
+        console.error('Error sending message:', error);
+        // Handle error appropriately (e.g., show a notification)
       }
     }
   };
-
-  // const formattedTime = new Date().toLocaleTimeString('en-US', {
-  //   hour: 'numeric',
-  //   minute: '2-digit',
-  //   hour12: true,
-  // });
 
   useEffect(() => {
     if (inputRef.current) {

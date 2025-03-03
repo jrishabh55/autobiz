@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { MoreHorizontal, SquarePen } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { CustomerListItem } from '../customer-list/custome-list-item';
+import { CustomerListItem } from '../customer-list/customer-list-item';
 import { Avatar, AvatarImage } from '../ui/avatar';
 
 interface SidebarProps {

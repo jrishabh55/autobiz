@@ -2,14 +2,14 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Customer } from '@/lib/db';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { FC } from 'react';
 
-export const CustomerListItem = ({
-  customer,
-  selectedCustomerId,
-}: {
+type CustomerListItemProps = {
   customer: Customer;
   selectedCustomerId?: string;
-}) => {
+};
+
+export const CustomerListItem: FC<CustomerListItemProps> = ({ customer, selectedCustomerId }) => {
   return (
     <div
       className={cn('p-4 cursor-pointer hover:bg-muted dark:hover:bg-muted-dark', {

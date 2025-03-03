@@ -19,7 +19,7 @@ export async function sendWhatsAppMessage({ to, message }: SendWhatsAppMessagePa
   const formattedNumber = to.replace(/[^\d+]/g, '');
 
   try {
-    const response = await fetch(`https://graph.facebook.com/v21.0/${phoneNumberId}/messages`, {
+    const response = await fetch(`https://graph.facebook.com/v22.0/${phoneNumberId}/messages`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${whatsappToken}`,
