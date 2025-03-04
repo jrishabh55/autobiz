@@ -1,3 +1,5 @@
+'use server';
+
 import { OrganizationCustomRoleKey } from '@/types/globals';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { eq } from 'drizzle-orm';
